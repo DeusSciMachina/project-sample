@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Blogasaurus Post</title>
+<link rel = "stylesheet"  href="static/css/index.css">
+</head>
+<body>
+<h1>Posts by {{username}} </h1>
+<section>
+  {% for theBlogPost in theBlogPost %}
+ <div class = "theBlogPost">
+   <h2> {{theBlogPost.theTitle}} </h2>
+   <p> {{theBlogPost.theContent}} </p>
+   </div>
+   {% endfor %}
+</section>
+
+</body>
+
+
+
+
+</html>
