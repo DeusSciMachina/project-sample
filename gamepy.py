@@ -1,94 +1,43 @@
-from tkinter import *
-import tkinter.messagebox as tkMessageBox
-import time
+<h1><time>00:00:00</time></h1>
 
-def Main():
-    global root
- 
-    root = Tk()
-    root.title("Sourcecodester")
-    width = 600
-    height = 200
-    screen_width = root.winfo_screenwidth()
-    screen_height = root.winfo_screenheight()
-    x = (screen_width / 2) - (width / 2)
-    y = (screen_height / 2) - (height / 2)
-    root.geometry("%dx%d+%d+%d" % (width, height, x, y))
-    Top = Frame(root, width=600)
-    Top.pack(side=TOP)
-    stopWatch = StopWatch(root)
-    stopWatch.pack(side=TOP)
-    Bottom = Frame(root, width=600)
-    Bottom.pack(side=BOTTOM)
-    Start =  Button(Bottom, text='Start', command=stopWatch.Start, width=10, height=2)
-    Start.pack(side=LEFT)
-    Stop = Button(Bottom, text='Stop', command=stopWatch.Stop, width=10, height=2)
-    Stop.pack(side=LEFT)
-    Reset = Button(Bottom, text='Reset', command=stopWatch.Reset, width=10, height=2)
-    Reset.pack(side=LEFT)
-    Exit = Button(Bottom, text='Exit', command=stopWatch.Exit, width=10, height=2)
-    Exit.pack(side=LEFT)
-    Title = Label(Top, text="Python: Simple Stopwatch For Beginners", font=("arial", 20), fg="white", bg="black")
-    Title.pack(fill=X)
-    root.config(bg="black")
-    root.mainloop() 
+var h1 = document.getElementsByTagName('h1')[0],
+    start = document.getElementById('start'),
+    stop = document.getElementById('stop'),
+    clear = document.getElementById('clear'),
+    seconds = 0, minutes = 0, hours = 0,
+    t;
 
-class StopWatch(Frame):  
-# Initialize the Main Function of the Stopwatch                                     
-    def __init__(self, parent=None, **kw):        
-        Frame.__init__(self, parent, kw)
-        self.startTime = 0.0        
-        self.nextTime = 0.0
-        self.onRunning = 0
-        self.timestr = StringVar()               
-        self.MakeWidget()      
- 
-# Create the widget of the Stopwatch Timer
-    def MakeWidget(self):                         
-        timeText = Label(self, textvariable=self.timestr, font=("times new roman", 50), fg="green", bg="black")
-        self.SetTime(self.nextTime)
-        timeText.pack(fill=X, expand=NO, pady=2, padx=2)                      
- 
-# Continously Update The Time From Counting
-    def Updater(self): 
-        self.nextTime = time.time() - self.startTime
-        self.SetTime(self.nextTime)
-        self.timer = self.after(50, self.Updater)
- 
-# Set The Value of Time When Is Called    
-    def SetTime(self, nextElap):
-        minutes = int(nextElap/60)
-        seconds = int(nextElap - minutes*60.0)
-        miliSeconds = int((nextElap - minutes*60.0 - seconds)*100)                
-        self.timestr.set('%02d:%02d:%02d' % (minutes, seconds, miliSeconds))
- 
-# Start The Stopwatch Counting When Button Start Is Clicked        
-    def Start(self):                                                     
-        if not self.onRunning:            
-            self.startTime = time.time() - self.nextTime
-            self.Updater()
-            self.onRunning = 1        
- 
-# Stop The Stopwatch Counting When Button Stop Is Clicked
-    def Stop(self):                                    
-        if self.onRunning:
-            self.after_cancel(self.timer)            
-            self.nextTime = time.time() - self.startTime    
-            self.SetTime(self.nextTime)
-            self.onRunning = 0
- 
-# Close The Application When Exit Button Is Clicked
-    def Exit(self):
-        result = tkMessageBox.askquestion('Sourcecodester', 'Are you sure you want to exit?', icon='warning')
-        if result == 'yes':
-            root.destroy()
-            exit()
- 
-# Reset The Timer When Reset Button Is Clicked
-    def Reset(self):                                  
-        self.startTime = time.time()         
-        self.nextTime = 0.0    
-        self.SetTime(self.nextTime)
- 
- if __name__ == '__main__':
-    Main()
+function add() {
+    seconds++;
+    if (seconds >= 60) {
+        seconds = 0;
+        minutes++;
+        if (minutes >= 60) {
+            minutes = 0;
+            hours++;
+        }
+    }
+    
+    h1.textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+
+    timer();
+}
+function timer() {
+    t = setTimeout(add, 1000);
+}
+timer();
+
+
+/* Start button */
+start.onclick = timer;
+
+/* Stop button */
+stop.onclick = function() {
+    clearTimeout(t);
+}
+
+/* Clear button */
+clear.onclick = function() {
+    h1.textContent = "00:00:00";
+    seconds = 0; minutes = 0; hours = 0;
+} 
