@@ -1,4 +1,4 @@
-<h1><time>00:00:00</time></h1>
+#<h1><time>00:00:00</time></h1>
 
 var h1 = document.getElementsByTagName('h1')[0],
     start = document.getElementById('start'),
