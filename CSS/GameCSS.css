@@ -1,0 +1,87 @@
+
+
+
+/* Split the screen in half */
+.split {
+  height: 100%;
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+
+}
+
+.Output_box{
+  border : 2px;
+  width: 800px;
+  height: 600px;
+  border-color: green;
+  border-style: dashed;
+  position: static;
+}
+.Input_box{
+  border: 2px;
+  width:800px;
+  height:100px;
+  border-color: green;
+  border-style: solid;
+  position: relative;
+  padding:0px;
+
+
+}
+#commandLineInput{
+  width: 800px;
+  height:100px;
+  outline:none;
+  background: black;
+  border-color: black;
+  color:green;
+  font-size: 24px;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  padding:0px;
+  #myBtn{
+  outline:none;
+  background-color: white;
+  border-color: black;
+
+  }
+}
+
+.Input_box{
+    font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+
+
+/* Control the left side */
+.left {
+  left: 0;
+  background-color: white;
+
+}
+
+/* Control the right side */
+.right {
+  right: 0;
+  background-color: black;
+  color: green;
+  font-size: 250%;
+  text-align: center
+}
+
+/* If you want the content centered horizontally and vertically */
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+/* Style the image inside the centered container, if needed */
+.centered img {
+  width: 150px;
+  border-radius: 50%;
+}
