@@ -2,8 +2,8 @@
 import webapp2
 import jinja2
 import os
-from models import Post
-from models import Author
+from Save import SaveState
+from Save import Player
 
 
 
@@ -12,52 +12,44 @@ the_jinja_env =jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
-class MainPageHandler(webapp2.RequestHandler):
+class MainGamePageHandler(webapp2.RequestHandler):
     def get(self):
-        result_template = the_jinja_env.get_template('templates/index.html')
+        result_template = the_jinja_env.get_template('templates/GamePage.html')
         self.response.write(result_template.render())
-class DisplayHandler(webapp2.RequestHandler):
-    def get(self):
-        result_template = the_jinja_env.get_template('templates/Show.html')
-        self.response.write(result_template.render())
-class familyHandler(webapp2.RequestHandler):
-        def get(self):
-            result_template = the_jinja_env.get_template('templates/about_my_family.html')
-            self.response.write(result_template.render())
 
-class BlogHandler(webapp2.RequestHandler):
+class SaveHandler(webapp2.RequestHandler):
+    """
     def get(self):
-        result_template = the_jinja_env.get_template('templates/new_post.html')
+        result_template = the_jinja_env.get_template('templates/new_user.html')
         self.response.write(result_template.render())
+    """
     def post(self):
         theName = self.request.get('name')
-        theTitle = self.request.get('title')
         theContent = self.request.get('content')
-        theBlogPost = Post(title=theTitle, content=theContent)
-        theBlogPost.put()
+        theSaveGame = SaveState(content=theContent)
+        theSaveGame.put()
 
-        the_check_authors = Author.query(Author.username == theName).fetch()
-        if len(the_check_authors)>0:
-                author = the_check_authors[0]
-                author.posts.append(theBlogPost.key)
+        the_check_player = Player.query(Player.username == theName).fetch()
+        if len(the_check_player)>0:
+                player = the_check_player[0]
+                player.posts.append(theSaveGame.key)
         else:
-                author = Author(username =theName, posts= [theBlogPost.key] )
-        author.put()
-        theBlogPost=[]
-        for theBlogPost_key in author.posts:
-            theBlogPost.append(theBlogPost_key.get())
+                player = Player(username =theName, posts= [theSaveGame.key] )
+        player.put()
+        theSaveGame=[]
+        for theSaveGame_key in player.posts:
+            theSaveGame.append(theSaveGame_key.get())
 
 
         template_vars = {
         'username': theName,
-        'blog_posts': theBlogPost
+        'save_game': theSaveGame
         }
 
         print("Received: %s" % (theName))
         var_dict = {
             "line1": theName,
-            "line2": theTitle,
-            "line3": theContent
+            "line2": theContent
 
 
 
@@ -66,15 +58,14 @@ class BlogHandler(webapp2.RequestHandler):
 
 
         }
-        result_template= the_jinja_env.get_template('templates/new_post.html')
+        result_template= the_jinja_env.get_template('templates/GamePage.html')
         self.response.write(result_template.render(var_dict))
 
 
 
 
 app = webapp2.WSGIApplication([
-    ('/', MainPageHandler),
-    ('/post', BlogHandler),
-    ('/Show', DisplayHandler),
-    ('/about_my_family',familyHandler)
+    ('/', MainGamePageHandler),
+    ('/saveState', SaveHandler),
+
 ], debug=True)
